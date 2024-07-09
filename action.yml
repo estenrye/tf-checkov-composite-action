@@ -8,7 +8,7 @@ inputs:
   working_directory:
     description: 'The fully qualified path to the directory where Terraform files are located'
     required: false
-    default: "."
+    default: "${{ github.workspace }}"
 runs:
     using: 'composite'
     steps:
@@ -20,4 +20,4 @@ runs:
       - name: Run Checkov
         shell: bash
         run: |
-           docker run -t -v ${{ inputs.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
+           docker run -t -v ${{ inputs.working_directory }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
