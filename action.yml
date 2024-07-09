@@ -1,0 +1,23 @@
+name: TF Checkov
+author: Esten Rye
+description: Perform static analysis with Checkov on Terraform files
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  working_directory:
+    description: 'The fully qualified path to the directory where Terraform files are located'
+    required: false
+    default: "${{ github.workspace }}"
+runs:
+    using: 'composite'
+    steps:
+      # Checkout Repository
+      - name : Check out Git Repository
+        uses: actions/checkout@v4
+
+      # Tfsec - Security scanner for your Terraform code
+      - name: Run Checkov
+        shell: bash
+        run: |
+           docker run -t -v ${{ inputs.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1

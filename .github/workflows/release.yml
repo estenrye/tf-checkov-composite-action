@@ -1,0 +1,42 @@
+name: Publish Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  packages: write
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Package Contents
+      run: |
+        echo "Packaging contents"
+        mkdir -p dist
+        cp LICENSE dist/
+        cp README.md dist/
+        cp action.yml dist/
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@20240405193535
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        title: ${{  github.ref_name }}
+        workdir: dist
+    - name: Load secrets
+      uses: 1password/load-secrets-action@v2
+      with:
+        # Export loaded secrets as environment variables
+        export-env: true
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        DISCORD_WEBHOOK: op://Home_Lab/Discord-Webhooks/github-actions-bot
+    - name: Discord notification
+      uses: Ilshidur/action-discord@master
+      with:
+        args: |
+          {{ EVENT_PAYLOAD.repository.full_name }} has published Release: ${{github.ref_name}}
+          Github Release URL: ${{github.server_url}}/${{github.repository}}/releases/tag/${{github.ref_name}}
