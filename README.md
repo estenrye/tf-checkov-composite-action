@@ -30,7 +30,7 @@ jobs:
 
 | Name | Description | Required | Default |
 |------|-------------|----------|---------|
-| `working_directory` | The fully qualified directory path to execute in. | No | `${{ github.workspace }}` |
+| `working_directory` | The fully qualified directory path to execute in. | No | `.` |
 
 ## Build Integration Pipeline Componenets Used
 
