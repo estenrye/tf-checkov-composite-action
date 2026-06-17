@@ -24,7 +24,7 @@ jobs:
           working_directory: './tf-tests/invalidly-formatted'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: nick-fields/assert-action@v3.0.1
+      - uses: nick-fields/assert-action@v4.0.1
         with:
           expected: success
           actual: ${{ steps.invalid-terraform.outcome }}
@@ -45,7 +45,7 @@ jobs:
           working_directory: './tf-tests/validly-formatted'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: nick-fields/assert-action@v3.0.1
+      - uses: nick-fields/assert-action@v4.0.1
         with:
           expected: success
           actual: ${{ steps.valid-terraform.outcome }}
